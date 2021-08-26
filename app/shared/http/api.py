@@ -32,7 +32,7 @@ class Api:
         has_token = self.__token is not None
         is_not_expired = (
             self.__expires_in is not None and
-            self.__expires_in < datetime.now()
+            self.__expires_in >= datetime.now()
         )
         if has_token and is_not_expired:
             return self.__token
