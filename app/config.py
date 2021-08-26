@@ -17,6 +17,6 @@ class DefaultConfig:
 
 
 class TestConfig(DefaultConfig):
-    API_URL = "sandbox-reporting.rpdpymnt.com"
+    API_URL = "sandbox-" + os.getenv('API_URL', None)
     TESTING = True
     DEBUG = True
