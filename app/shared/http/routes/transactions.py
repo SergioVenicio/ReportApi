@@ -77,7 +77,10 @@ def list():
     content = current_app.api.list_transactions(data=data)
     def parse_urls(current_page, new_page):
         path, params = request.url.split('?')
-        params = params.replace(f'page={current_page}', f'page={new_page}')
+        if f'page={current_page}' in params:
+            params = params.replace(f'page={current_page}', f'page={new_page}')
+        else:
+            params += f'page={new_page}'
         return f'{path}?{params}'
 
     current_page = int(request.args.get('page', 1))
