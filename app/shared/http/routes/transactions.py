@@ -80,7 +80,7 @@ def list():
         if f'page={current_page}' in params:
             params = params.replace(f'page={current_page}', f'page={new_page}')
         else:
-            params += f'page={new_page}'
+            params += f'&page={new_page}'
         return f'{path}?{params}'
 
     current_page = int(request.args.get('page', 1))
