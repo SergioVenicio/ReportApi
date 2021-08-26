@@ -42,20 +42,46 @@ class Api:
             'password': self.__pwd
         }
         response = self.post('/merchant/user/login', payload)
-        print(response)
         self.__token = response['token']
-        self.__expires_in = datetime.now() + timedelta(minutes=10)
+        self.__expires_in = datetime.now() + timedelta(seconds=540)
         return self.__token
     
 
-    def post(self, endpoint, data):
+    def post(self, endpoint, data, headers={}):
         return self.request(
             endpoint,
             method='POST',
-            data=data
+            data=data,
+            headers=headers
         )
 
-    def request(self, endpoint, method, data={}):
+    def get(self, endpoint, params):
+        return self.request(
+            endpoint,
+            method='GET',
+            params=params
+        )
+
+    def request(self, endpoint, method, data={}, params={}, headers={}):
         url = f'{self.base_url}{endpoint}'
-        response = VALID_METHODS[method](url, data=data)
+
+        response = VALID_METHODS[method](
+            url,
+            data=data,
+            params=params,
+            headers=headers
+        )
         return response.json()
+
+    def get_transaction(self, transaction_id):
+        headers = {'Authorization': self.token}
+        data = {'transactionId': transaction_id}
+        return self.post('/transaction', data=data, headers=headers)
+
+    def list_transactions(self, data):
+        headers = {'Authorization': self.token}
+        return self.post('/transaction/list', data, headers=headers)
+    
+    def list_transactions_report(self, data):
+        headers = {'Authorization': self.token}
+        return self.post('/transactions/report', data, headers=headers)
